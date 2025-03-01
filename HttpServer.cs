@@ -198,7 +198,7 @@ namespace GFrag
 
                             var hwid = auth.GetHwid();
                             string token = await auth.LoginAsync(Username, Password, hwid);
-                            if (token == "Invalid hardware ID")
+                            if (token.Contains("hardware"))
                             {
                                 
                                 await Device.InvokeOnMainThreadAsync(async () =>
