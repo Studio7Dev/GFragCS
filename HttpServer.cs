@@ -47,9 +47,10 @@ namespace GFrag
                         var Password = BodyDict["password"];
                         var hwid = auth.GetHwid();
                         var Token = await auth.LoginAsync(Username, Password, hwid);
+                        Debug.WriteLine("Web Login: " + Token);
                         if(Token != null)
                         {
-                            if (!Token.Contains("Invalid"))
+                            if (!Token.Contains("hardware"))
                             {
 
                                 
