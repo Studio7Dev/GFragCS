@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:xct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="GFrag.FilesPage"
+             Appearing="ContentPage_Appearing"
+             Loaded="ContentPage_Loaded"
+             Title="FilesPage">
+    <Grid>
+        <WebView x:Name="backgroundWebView"
+                 HorizontalOptions="FillAndExpand"
+                 Source="http://127.0.0.1:52347/background"
+                 VerticalOptions="FillAndExpand"
+                 HandlerChanged="backgroundWebView_HandlerChanged"
+                 Background="#202029"
+                 BackgroundColor="#202029" />
+        <StackLayout Padding="20" Spacing="20" VerticalOptions="Start">
+            <Label Text="List of Stored Files" HorizontalOptions="Center" VerticalOptions="Start" FontSize="24" FontAttributes="Bold"/>
+            <Frame BackgroundColor="Transparent" BorderColor="Transparent">
+                <ProgressBar x:Name="DownloadProgress" 
+                             VerticalOptions="StartAndExpand" 
+                             IsVisible="False" 
+                             BackgroundColor="#7160E8"  
+                             ProgressColor="White" />
+            </Frame>
+            <Frame x:Name="AFrame" CornerRadius="10" Padding="0" BorderColor="#7160E8" BackgroundColor="#252526">
+                <StackLayout Orientation="Horizontal" Padding="5" Spacing="10" BackgroundColor="#252526" HorizontalOptions="CenterAndExpand">
+                    <Button ToolTipProperties.Text="Refresh Files"  ImageSource="{mi:MaterialOutlined Icon=Refresh, IconColor=#8F7E58}" Clicked="RefreshButton_Clicked" BackgroundColor="#0D0D0D" TextColor="White" CornerRadius="5" Padding="10,5" >
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerExited="ButtonUnHover" PointerEntered="ButtonHover"/>
+                        </Button.GestureRecognizers>
+                    </Button>
+                    <Button ToolTipProperties.Text="Refresh Account Cache, Storage" ImageSource="{mi:MaterialOutlined Icon=ArrowDownward, IconColor=#8F7E58}" x:Name="RefreshStorage"  Clicked="RefreshStorage_Clicked" BackgroundColor="#0D0D0D" TextColor="White" CornerRadius="5" Padding="10,5" >
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerExited="ButtonUnHover" PointerEntered="ButtonHover"/>
+                        </Button.GestureRecognizers>
+                    </Button>
+                    <Button ToolTipProperties.Text="Deleted Selected Files" ImageSource="{mi:MaterialOutlined Icon=DeleteSweep, IconColor=#8F7E58}" x:Name="DeleteSelected"  Clicked="DeleteSelected_Clicked" BackgroundColor="#0D0D0D" TextColor="White" CornerRadius="5" Padding="10,5" >
+                        <Button.GestureRecognizers>
+                            <PointerGestureRecognizer PointerExited="ButtonUnHover" PointerEntered="ButtonHover"/>
+                        </Button.GestureRecognizers>
+                    </Button>
+                </StackLayout>
+            </Frame>
+            <Frame x:Name="ProgressFrame" CornerRadius="5" Padding="5" BorderColor="#7160E8" BackgroundColor="#252526" IsVisible="False">
+                <Grid RowSpacing="5" Padding="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" HorizontalOptions="CenterAndExpand" FontFamily="Sans" FontSize="18" x:Name="StorageProgressPercentage" IsVisible="True" Text="Completed: 0%"/>
+                    <Label Grid.Row="1" HorizontalOptions="CenterAndExpand" FontFamily="Sans" FontSize="18" x:Name="AccountsLoadNo" IsVisible="True" Text="Accounts: 0"/>
+                    <ProgressBar Grid.Row="2" ScaleY="2" x:Name="StorageProgressBar" IsVisible="True" Progress="0" />
+                </Grid>
+            </Frame>
+            <Frame x:Name="CFrame" BackgroundColor="#252526">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" HorizontalOptions="CenterAndExpand" x:Name="StorageUsageLabel" FontFamily="Sans" FontSize="18" FontAttributes="Bold" Text="Storage Usage: N/a"/>
+                    <Label Grid.Row="1" HorizontalOptions="CenterAndExpand" x:Name="AccountsNo" FontFamily="Sans" FontSize="18" IsVisible="True" Text="Accounts: 0"/>
+                </Grid>
+            </Frame>
+            <CollectionView x:Name="filesCollectionView" VerticalOptions="FillAndExpand">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="10" HorizontalItemSpacing="5" Span="1"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame x:Name="FileFrame" CornerRadius="10" HasShadow="True" Padding="10" BackgroundColor="#202029" BorderColor="#7160E8" >
+                            <Grid ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Text="{Binding FileName}" FontSize="18" TextColor="#7160E8" LineBreakMode="TailTruncation"/>
+                                <Label Grid.Column="0" Grid.Row="1" Text="{Binding UFID}" FontSize="14" TextColor="#666" />
+
+                                <StackLayout Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalOptions="End">
+                                    <Frame Padding="5" Margin="3" BorderColor="#cc0000" BackgroundColor="#1F1F1F">
+                                        <Grid ColumnSpacing="0" Padding="0" HorizontalOptions="EndAndExpand">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button ToolTipProperties.Text="Stop Sharing file" Grid.Column="4" HorizontalOptions="StartAndExpand" ImageSource="{mi:MaterialOutlined Icon=RemoveCircleOutline}" FontAttributes="Bold" Command="{Binding UnShareBtn}" BackgroundColor="#51B4FF" CornerRadius="5" Padding="10,5" Margin="0,0,10,0">
+                                                <Button.GestureRecognizers>
+                                                    <PointerGestureRecognizer PointerExited="DownloadUnHover" PointerEntered="DownloadHover"/>
+                                                </Button.GestureRecognizers>
+                                                <Button.Triggers>
+                                                    <Trigger TargetType="Button" Property="IsFocused" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#4590C7" />
+                                                        <Setter Property="Scale" Value="1.1" />
+                                                    </Trigger>
+                                                </Button.Triggers>
+                                            </Button>
+
+                                            <Button ToolTipProperties.Text="Share a file" Grid.Column="5" HorizontalOptions="StartAndExpand" ImageSource="{mi:MaterialOutlined Icon=Share}" FontAttributes="Bold" Command="{Binding ShareBtn}" BackgroundColor="#51B4FF" CornerRadius="5" Padding="10,5" Margin="0,0,10,0">
+                                                <Button.GestureRecognizers>
+                                                    <PointerGestureRecognizer PointerExited="DownloadUnHover" PointerEntered="DownloadHover"/>
+                                                </Button.GestureRecognizers>
+                                                <Button.Triggers>
+                                                    <Trigger TargetType="Button" Property="IsFocused" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#4590C7" />
+                                                        <Setter Property="Scale" Value="1.1" />
+                                                    </Trigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <Button ToolTipProperties.Text="Download File" Grid.Column="6" HorizontalOptions="StartAndExpand" ImageSource="{mi:MaterialOutlined Icon=CloudDownload}" FontAttributes="Bold" Command="{Binding DownloadBtn}" BackgroundColor="#51B4FF" CornerRadius="5" Padding="10,5" Margin="0,0,10,0">
+                                                <Button.GestureRecognizers>
+                                                    <PointerGestureRecognizer PointerExited="DownloadUnHover" PointerEntered="DownloadHover"/>
+                                                </Button.GestureRecognizers>
+                                                <Button.Triggers>
+                                                    <Trigger TargetType="Button" Property="IsFocused" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#4590C7" />
+                                                        <Setter Property="Scale" Value="1.1" />
+                                                    </Trigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <Button ToolTipProperties.Text="Check File" Grid.Column="7" HorizontalOptions="StartAndExpand" ImageSource="{mi:MaterialOutlined Icon=ChecklistRtl}" FontAttributes="Bold" Command="{Binding CheckFileBtn}" BackgroundColor="#51B4FF" CornerRadius="5" Padding="10,5" Margin="0,0,10,0">
+                                                <Button.GestureRecognizers>
+                                                    <PointerGestureRecognizer PointerExited="DownloadUnHover" PointerEntered="DownloadHover"/>
+                                                </Button.GestureRecognizers>
+                                                <Button.Triggers>
+                                                    <Trigger TargetType="Button" Property="IsFocused" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#4590C7" />
+                                                        <Setter Property="Scale" Value="1.1" />
+                                                    </Trigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <Button ToolTipProperties.Text="Delete File" Grid.Column="8" HorizontalOptions="StartAndExpand" ImageSource="{mi:MaterialOutlined Icon=Delete}" FontAttributes="Bold" Command="{Binding DeleteBtn}" BackgroundColor="#FF0000" CornerRadius="5" Padding="10,5">
+                                                <Button.GestureRecognizers>
+                                                    <PointerGestureRecognizer PointerExited="DeleteUnHover" PointerEntered="DeleteHover"/>
+                                                </Button.GestureRecognizers>
+
+                                                <Button.Triggers>
+                                                    <Trigger TargetType="Button" Property="IsFocused" Value="True">
+                                                        <Setter Property="BackgroundColor" Value="#cc0000" />
+                                                        <Setter Property="Scale" Value="1.1" />
+                                                    </Trigger>
+                                                </Button.Triggers>
+                                            </Button>
+                                            <Switch HorizontalOptions="EndAndExpand" Grid.Column="9" Grid.ColumnSpan="1" IsToggled="False" OnColor="#5DB9FF"  ToolTipProperties.Text="{Binding FileName}" Margin="0,-10" BackgroundColor="Transparent">
+                                                <Switch.Behaviors>
+                                                    <xct:EventToCommandBehavior EventName="Toggled" Command="{Binding SwitchSelectHandler}" />
+                                                </Switch.Behaviors>
+                                            </Switch>
+                                        </Grid>
+                                    </Frame>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </Grid>
+</ContentPage>

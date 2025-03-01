@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             x:Class="GFrag.LoginPage"
+             Loaded="ContentPage_Loaded"
+             Title="Login">
+    <Grid>
+        
+        <Frame x:Name="A0Frame" Padding="0" Margin="0" CornerRadius="7">
+            <Grid>
+
+                <WebView x:Name="backgroundWebView"
+                 HorizontalOptions="FillAndExpand"
+                 Source="http://127.0.0.1:52347/login"
+                 VerticalOptions="FillAndExpand"
+                         HandlerChanged="backgroundWebView_HandlerChanged"
+                 Background="#202020"
+                 BackgroundColor="#202020" />
+                <!--Frame x:Name="AFrame" BackgroundColor="#202029" BorderColor="#8974CC" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <VerticalStackLayout Padding="20" Spacing="20">
+                        <Image Source="login.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" WidthRequest="200" HeightRequest="150"/>
+                        <Label HorizontalOptions="CenterAndExpand" Text="Login" FontSize="24" FontAttributes="Bold" FontFamily="Sans"/>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="Username" FontFamily="Sans" FontSize="Small" VerticalOptions="CenterAndExpand"/>
+                            <Entry x:Name="usernameEntry" Placeholder="Enter username" HorizontalOptions="CenterAndExpand" WidthRequest="180" MaximumWidthRequest="180" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text=" Password" FontFamily="Sans" FontSize="Small" VerticalOptions="CenterAndExpand"/>
+                            <Entry x:Name="passwordEntry" Placeholder="Enter password" IsPassword="True" HorizontalOptions="CenterAndExpand" WidthRequest="180" MaximumWidthRequest="180" Completed="OnEntryCompleted" />
+                        </StackLayout>
+                        <VerticalStackLayout Spacing="10">
+                            <Button x:Name="loginButton" ImageSource="{mi:MaterialOutlined Icon=Login, IconSize=32, IconColor=#1F1F1F}" Text="Login" Clicked="LoginButton_Clicked" BackgroundColor="#4286F5" FontAttributes="Bold" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                <Button.GestureRecognizers>
+                                    <PointerGestureRecognizer PointerExited="Login_PointerExited" PointerEntered="Login_PointerEntered"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                            <Button x:Name="registerButton" ImageSource="{mi:MaterialOutlined Icon=PersonAdd, IconSize=32, IconColor=#1F1F1F}" Text="Register" Clicked="RegisterButton_Clicked" BackgroundColor="#FABC05" FontAttributes="Bold" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                <Button.GestureRecognizers>
+                                    <PointerGestureRecognizer PointerExited="Register_PointerExited" PointerEntered="Register_PointerEntered"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                            <Button x:Name="ResetHwidButton" ImageSource="{mi:MaterialOutlined Icon=LockReset, IconSize=32, IconColor=#1F1F1F}" Text="Reset Hwid" Clicked="ResetHwidButton_Clicked" BackgroundColor="#C81C2D" FontAttributes="Bold" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                <Button.GestureRecognizers>
+                                    <PointerGestureRecognizer PointerExited="ResetHwid_PointerExited" PointerEntered="ResetHwid_PointerEntered"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                            <Grid VerticalOptions="Center" HorizontalOptions="Center" x:Name="LoaderSpin" IsVisible="False">
+                                <BoxView Color="Transparent" Opacity="0.5" />
+                                <ActivityIndicator IsRunning="True" IsVisible="True" Color="White" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Frame-->
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

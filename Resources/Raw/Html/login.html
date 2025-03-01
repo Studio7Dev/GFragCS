@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>cyberpunk terminal</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="../Css/login.css">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>GFrag Login</title>
+  <!-- <link rel="stylesheet" href="css/term.css"> -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Spinner styles */
+    .spinner {
+      display: none; /* Hidden by default */
+      border: 4px solid #1E0606;
+      border-top: 4px solid #78050A; /* Change this color to match your theme */
+      border-radius: 50%;
+      width: 40px; /* Adjust size as needed */
+      height: 40px; /* Adjust size as needed */
+      animation: spin 0.8s linear infinite; /* Adjust speed as needed */
+      margin: 10px auto; /* Center the spinner */
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+
+
+<div class="terminal glitch">
+	<div class="scanline"></div>
+	<p class="spinner">[/]</p>
+	<div class="hydra">
+		<div class="hydra_rebooting">
+			<p class="hydra_atext">&lt;  &gt;</p>
+			<p class="text--sm hydra_aversion">GFrag VER N/A SYS</p>
+			<p class="text--sm">PROCESS: <span class="process-amount">0</span>%</p>
+			<p class="loading-bar"></p>
+		</div>
+		<div class="hydra_reboot_success hidden">
+      <div class="container on">
+        <div class="screen">
+          <h3 class="title">
+            CONNECTION ESTABLISHED
+          </h3>
+          <h3 class="title" id="title_sub">
+            <!-- v4.0.24.0 -->
+          </h3>
+          <div class="box--outer">
+            <div class="box">
+              <div class="box--inner">
+                <div class="content">
+                  <div class="holder">
+                    <b>Welcome to GFrag</b> — the one and only fragmented file storage powered by&nbsp;Google&nbsp;Cloud. Please enter your GFrag Authentication Credentials.
+                    <br>
+                    <br>
+    
+                    <form id="loginForm">
+                      <div class="row">
+                        <div class="col col__left label">
+                          Username
+                        </div>
+                        <div class="col col__center">
+                          <input type="text" id="login" name="username" maxlength="32" value="" placeholder="Administrator" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col col__left label">
+                          Password
+                        </div>
+                        <div class="col col__center">
+                          <input type="password" id="password" name="password" required="required" placeholder="********" data-error="" maxlength="32" autocomplete="new-password" autofocus="true" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <button id="loginx" name="loginx" class="submit">[login]</button>
+                        <button id="register" name="register" class="submit">[register]</button>
+                        <button id="resethwid" name="resethwid" class="submit">[reset hwid]</button>
+                      </div>
+                    </form>
+                    <div class="spinner" id="spinner"></div>
+                    <div id="responseMessage"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+		</div>
+	</div>
+</div>
+
+
+<body >
+  
+<script>
+const terminal = document.querySelector(".terminal");
+const hydra = document.querySelector(".hydra");
+const rebootSuccessText = document.querySelector(".hydra_reboot_success");
+const atext = document.querySelector(".hydra_atext");
+const aversion = document.querySelector(".hydra_aversion");
+
+const maxCharacters = 24;
+const unloadedCharacter = ".";
+const loadedCharacter = "#";
+const spinnerFrames = ["/", "-", "\\", "|"];
+
+// Clone the element and give the glitch classes
+(glitchElement => {
+	const glitch = glitchElement.cloneNode(true);
+	const glitchReverse = glitchElement.cloneNode(true);
+	glitch.classList.add("glitch--clone", "glitch--bottom");
+	glitchReverse.classList.add("glitch--clone", "glitch--top");
+	glitch.setAttribute("aria-hidden", "true");
+	glitchReverse.setAttribute("aria-hidden", "true");
+
+	glitchElement.insertAdjacentElement("afterend", glitch);
+	glitchElement.insertAdjacentElement("afterend", glitchReverse);
+})(terminal);
+
+// Get all the loading bars
+const loadingBars = document.querySelectorAll(".loading-bar");
+const processAmounts = document.querySelectorAll(".process-amount");
+const spinners = document.querySelectorAll(".spinner");
+const rebootingText = document.querySelectorAll(".hydra_rebooting");
+const glitches = document.querySelectorAll(".glitch--clone");
+const title_sub = document.getElementById("title_sub");
+
+var AppVersion = "";
+// jquery GET http://gtaviso460.pythonanywhere.com/version%20Response:%20%7B%22version%22:%224.0.24.0%22%7D
+
+const GetAppVersion = async() => {
+	const response = await fetch("http://gtaviso460.pythonanywhere.com/version");
+	const data = await response.json();
+	return data.version;
+};
+
+
+// Helper for random number
+const RandomNumber = (min, max) => Math.floor(Math.random() * max) + min;
+
+const Delay = (time) => {
+	return new Promise((resolve) => setTimeout(resolve, time))
+};
+
+const HideAll = elements =>
+	elements.forEach(glitchGroup =>
+		glitchGroup.forEach(element => element.classList.add("hidden"))	);
+
+const ShowAll = elements =>
+	elements.forEach(glitchGroup =>
+		glitchGroup.forEach(element => element.classList.remove("hidden")) );
+
+// Render the bar to HTML
+const RenderBar = ( values ) => {
+	const currentLoaded = values.lastIndexOf(loadedCharacter) + 1;
+	const loaded = values.slice(0, currentLoaded).join("");
+	const unloaded = values.slice(currentLoaded).join("");
+
+	// Update all the loading bars
+	loadingBars.forEach(loadingBar => {
+		loadingBar.innerHTML = `(${loaded}<span class="loading-bar--unloaded">${unloaded}</span>)`;
+	});
+
+	// Update all the percentages
+	loadingPercent = Math.floor(currentLoaded / maxCharacters * 100);
+	processAmounts.forEach(processAmount => {
+		processAmount.innerText = loadingPercent;
+	});
+};
+
+// Update the loaded value and render it to HTML
+const DrawLoadingBar = ( values ) => {
+	return new Promise((resolve) => {
+			const loadingBarAnimation = setInterval(() => {
+				if (!values.includes(unloadedCharacter)) {
+					clearInterval(loadingBarAnimation);
+					resolve();
+				}
+
+				values.pop(unloadedCharacter);
+				values.unshift(loadedCharacter);
+				RenderBar(values);
+		}, RandomNumber(50, 300));
+	});
+};
+
+const DrawSpinner = (spinnerFrame = 0) => {
+	return setInterval(() => {
+		spinnerFrame += 1;
+		spinners.forEach(
+			spinner =>
+				(spinner.innerText = `[${
+					spinnerFrames[spinnerFrame % spinnerFrames.length]
+				}]`)
+		);
+	}, RandomNumber(50, 300));
+};
+
+const AnimateBox = () => {
+	const first = hydra.getBoundingClientRect();
+	HideAll([spinners, glitches, rebootingText]);
+	rebootSuccessText.classList.remove("hidden");
+	rebootSuccessText.style.visibility = "hidden";
+	const last = hydra.getBoundingClientRect();
+
+	const hydraAnimation = hydra.animate([
+		{ transform: `scale(${first.width / last.width}, ${first.height / last.height})` },
+		{ transform: `scale(${first.width / last.width}, 1.2)` },
+		{ transform: `none` }
+	],{
+		duration: 600,
+		easing: 'cubic-bezier(0,0,0.32,1)',
+	});	
+
+	hydraAnimation.addEventListener('finish', () => {
+		rebootSuccessText.removeAttribute("style");
+		hydra.removeAttribute("style");
+	});
+
+};
+
+const PlayHydra = async(AText, Aversion) => {
+  
+  atext.innerText = "Please wait...";
+  aversion.innerText = "GFrag VER N/A SYS";
+  if(AppVersion !== ""){
+    atext.innerText = AText || "SYSTEM INITIALIZING";
+    aversion.innerText = Aversion || `GFrag VER ${AppVersion} SYS`;
+  }else{
+    AppVersion = await GetAppVersion();
+    title_sub.innerHTML = "v"+AppVersion;
+    atext.innerText = AText || "SYSTEM INITIALIZING";
+    aversion.innerText = Aversion || `GFrag VER ${AppVersion} SYS`;
+  }
+
+
+	terminal.classList.add("glitch");
+	rebootSuccessText.classList.add("hidden");
+	ShowAll([spinners, glitches, rebootingText]);
+	const loadingBar = new Array(maxCharacters).fill(unloadedCharacter);
+	const spinnerInterval = DrawSpinner();
+
+	// Play the loading bar
+	await DrawLoadingBar(loadingBar);
+
+	clearInterval(spinnerInterval);
+  terminal.classList.remove("glitch");
+  AnimateBox();
+
+	// Loading is complete on the next frame, hide spinner and glitch
+	// requestAnimationFrame(()=> {
+	// 	clearInterval(spinnerInterval);
+	// 	terminal.classList.remove("glitch");
+	// 	AnimateBox();
+	// 	setTimeout(PlayHydra, 5000);
+	// });
+};
+
+PlayHydra("SYSTEM INITIALIZING");
+
+</script>
+  <script>
+    $(document).ready(function () {
+      
+      $('#loginx').click(function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Show the spinner
+        PlayHydra("SYSTEM AUTHENTICATING");
+
+        // Gather form data
+        var formData = {
+          username: $('#login').val(),
+          password: $('#password').val()
+        };
+
+        // Convert form data to URL-encoded string
+        var encodedData = $.param(formData);
+
+        // AJAX POST request
+        $.ajax({
+          type: 'POST',
+          url: '/login', // Endpoint URL
+          data: encodedData, // Send URL-encoded data
+          contentType: 'application/x-www-form-urlencoded', // Set content type
+          success: function (response) {
+            // Check the response for success or failure
+            if (response.trim() === "Failed Login") {
+              $('#responseMessage').html('<p style="color: red;">Login failed. Please check your credentials.</p>');
+            } else {
+              $('#responseMessage').html('<p style="color: red;">Login successful!</p>');
+            }
+          },
+          error: function (xhr, status, error) {
+            // Handle error response
+            $('#responseMessage').html('<p style="color: red;">An error occurred: ' + xhr.responseText + '</p>');
+          },
+          complete: function () {
+            // Hide the spinner after the request is complete
+            $('#spinner').hide();
+          }
+        });
+      });
+    
+      $('#register').click(function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Show the spinner
+        // $('#spinner').show();
+        PlayHydra("SYSTEM REGISTERING");
+        // Gather form data
+        var formData = {
+          username: $('#login').val(),
+          password: $('#password').val()
+        };
+
+        // Convert form data to URL-encoded string
+        var encodedData = $.param(formData);
+
+        // AJAX POST request
+        $.ajax({
+          type: 'POST',
+          url: '/register', // Endpoint URL
+          data: encodedData, // Send URL-encoded data
+          contentType: 'application/x-www-form-urlencoded', // Set content type
+          success: function (response) {
+            // Check the response for success or failure
+            if (response.trim() === "Failed Register") {
+              $('#responseMessage').html('<p style="color: red;">Register failed. Please check your credentials.</p>');
+            } else {
+              $('#responseMessage').html('<p style="color: red;">Register successful!</p>');
+            }
+          },
+          error: function (xhr, status, error) {
+            // Handle error response
+            $('#responseMessage').html('<p style="color: red;">An error occurred: ' + xhr.responseText + '</p>');
+          },
+          complete: function () {
+            // Hide the spinner after the request is complete
+            $('#spinner').hide();
+          }
+        });
+      });
+
+      $('#resethwid').click(function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Show the spinner
+        // $('#spinner').show();
+        PlayHydra("SYSTEM RESETTING HWID");
+
+        // Gather form data
+        var formData = {
+          username: $('#login').val(),
+          password: $('#password').val()
+        };
+
+        // Convert form data to URL-encoded string
+        var encodedData = $.param(formData);
+
+        // AJAX POST request
+        $.ajax({
+          type: 'POST',
+          url: '/resethwid', // Endpoint URL
+          data: encodedData, // Send URL-encoded data
+          contentType: 'application/x-www-form-urlencoded', // Set content type
+          success: function (response) {
+            // Check the response for success or failure
+            if (response.trim() === "Failed Reset HWID") {
+              $('#responseMessage').html('<p style="color: red;">Reset HWID failed. Please check your credentials.</p>');
+            } else {
+              $('#responseMessage').html('<p style="color: red;">Reset HWID successful!</p>');
+            }
+          },
+          error: function (xhr, status, error) {
+            // Handle error response
+            $('#responseMessage').html('<p style="color: red;">An error occurred: ' + xhr.responseText + '</p>');
+          },
+          complete: function () {
+            // Hide the spinner after the request is complete
+            $('#spinner').hide();
+          }
+        });
+      });
+});
+  </script>
+
+
+</body>
+
+</html>
+<!-- partial -->
+  
+</body>
+</html>

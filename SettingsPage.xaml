@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             x:Class="GFrag.SettingsPage"
+             Title="SettingsPage">
+
+    <Grid>
+
+
+        <Frame x:Name="A0Frame" Padding="0" Margin="0" CornerRadius="7">
+            <Grid>
+                <WebView x:Name="backgroundWebView"
+                         HandlerChanged="backgroundWebView_HandlerChanged"
+                 HorizontalOptions="FillAndExpand"
+                 Source="http://127.0.0.1:52347/background"
+                 VerticalOptions="FillAndExpand"
+                
+                 Background="#202029"
+                 BackgroundColor="#202029" />
+                <Grid Grid.Row="0" Grid.Column="0"  ColumnSpacing="10" HorizontalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0" BackgroundColor="#202029" BorderColor="#8974CC" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <ScrollView Orientation="Both" MaximumHeightRequest="500" VerticalScrollBarVisibility="Always" HorizontalScrollBarVisibility="Always">
+                            <VerticalStackLayout Padding="20" Spacing="20">
+                                <Label HorizontalOptions="CenterAndExpand" Text="Settings" FontSize="24" FontAttributes="Bold" FontFamily="Sans"/>
+
+                                <Label Text="Database Path:" FontFamily="Sans" FontSize="Small"/>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Entry x:Name="DatabasePathEntry" Placeholder="Enter database path" HorizontalOptions="StartAndExpand" WidthRequest="180" MaximumWidthRequest="180" />
+                                    <Button ImageSource="{mi:MaterialOutlined Icon=Folder, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#4286F5" FontAttributes="Bold" x:Name="BrowseDatabaseButton" Text="Browse" Clicked="BrowseDatabaseButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                        <Button.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerExited="Def_PointerExited" PointerEntered="Def_PointerEntered"/>
+                                        </Button.GestureRecognizers>
+                                    </Button>
+                                </StackLayout>
+
+                                <Label Text="Accounts Directory:" FontFamily="Sans" FontSize="Small"/>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Entry x:Name="AccountsDirectoryEntry" HorizontalOptions="StartAndExpand" WidthRequest="180" MaximumWidthRequest="180" Placeholder="Enter accounts directory" />
+                                    <Button ImageSource="{mi:MaterialOutlined Icon=Folder, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#4286F5" FontAttributes="Bold" x:Name="BrowseButton" Text="Browse" Clicked="BrowseButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                        <Button.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerExited="Def_PointerExited" PointerEntered="Def_PointerEntered"/>
+                                        </Button.GestureRecognizers>
+                                    </Button>
+                                </StackLayout>
+
+                                <Label Text="Downloads Folder:" FontFamily="Sans" FontSize="Small"/>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Entry x:Name="DownloadsFolderEntry" HorizontalOptions="StartAndExpand" WidthRequest="180" MaximumWidthRequest="180" Placeholder="Enter downloads folder" />
+                                    <Button ImageSource="{mi:MaterialOutlined Icon=Folder, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#4286F5" FontAttributes="Bold" x:Name="BrowseDownloadsButton" Text="Browse" Clicked="BrowseDownloadsButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                        <Button.GestureRecognizers>
+                                            <PointerGestureRecognizer PointerExited="Def_PointerExited" PointerEntered="Def_PointerEntered"/>
+                                        </Button.GestureRecognizers>
+                                    </Button>
+                                </StackLayout>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Grid.Row="0" Text="Host:" FontFamily="Sans" FontSize="Small"/>
+                                    <Entry Grid.Column="0" Grid.Row="1" x:Name="ServerHostEntry" Placeholder="Enter server host" HorizontalOptions="StartAndExpand" WidthRequest="180" MaximumWidthRequest="180" />
+
+                                    <Label Grid.Column="3" Grid.Row="0" Text="Port:" FontFamily="Sans" FontSize="Small"/>
+                                    <Entry Grid.Column="3" Grid.Row="1" x:Name="ServerPortEntry" Placeholder="8080" HorizontalOptions="StartAndExpand" WidthRequest="70" MaximumWidthRequest="180" Keyboard="Numeric" />
+                                </Grid>
+
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="6" Text="Theme" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Picker Grid.Column="1" Grid.Row="6" x:Name="BGSetterPicker" SelectedIndex="0" SelectedIndexChanged="BGSetterPicker_SelectedIndexChanged">
+                                    <Picker.Items>
+                                        <x:String>Stars, Interactive</x:String>
+                                        <x:String>Interactive Particles</x:String>
+                                        <x:String>Neon Pink, Interactive, Dark</x:String>
+                                        <x:String>80s Retro City</x:String>
+                                        <x:String>VHS Retro Blue</x:String>
+                                    </Picker.Items>
+                                </Picker>
+
+                                <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="StartAndExpand">
+                                    <Label VerticalOptions="CenterAndExpand" Text="Use HTTPS" FontFamily="Sans" FontSize="Small" />
+                                    <Switch x:Name="HttpsSwitch" Toggled="HttpsSwitch_Toggled" IsToggled="True" OnColor="#4286F5" />
+                                </StackLayout>
+                            </VerticalStackLayout>
+                        </ScrollView>
+                    </Frame>
+
+                    <Frame Grid.Column="1" BackgroundColor="#202029" BorderColor="#8974CC" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <VerticalStackLayout>
+                            
+                            <Label Text="Action Menu" FontSize="Title" FontFamily="Sans" HorizontalOptions="CenterAndExpand"/>
+                            <Grid RowSpacing="10" ColumnSpacing="20" Padding="4" HorizontalOptions="StartAndExpand">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+
+                                </Grid.ColumnDefinitions>
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="0" Text="Save Settings" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Button Grid.Column="1" Grid.Row="0" ImageSource="{mi:MaterialOutlined Icon=SaveAs, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#05FA50"  FontAttributes="Bold" x:Name="SaveSettingsButton" ToolTipProperties.Text="Save Settings" Clicked="SaveSettingsButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                    <Button.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerExited="Save_PointerExited" PointerEntered="Save_PointerEntered"/>
+                                    </Button.GestureRecognizers>
+                                </Button>
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="1" Text="Reset Settings" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Button Grid.Column="1" Grid.Row="1" ImageSource="{mi:MaterialOutlined Icon=Clear, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#F14B5C" FontAttributes="Bold" x:Name="ResetSettingsButton" ToolTipProperties.Text="Reset Settings" Clicked="ResetSettingsButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                    <Button.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerExited="Reset_PointerExited" PointerEntered="Reset_PointerEntered"/>
+                                    </Button.GestureRecognizers>
+                                </Button>
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="2" Text="Export Settings" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Button Grid.Column="1" Grid.Row="2" ImageSource="{mi:MaterialOutlined Icon=Save, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#4286F5"  FontAttributes="Bold" x:Name="ExportSettingsButton" ToolTipProperties.Text="Export Settings" Clicked="ExportSettingsButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                    <Button.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerExited="Def_PointerExited" PointerEntered="Def_PointerEntered"/>
+                                    </Button.GestureRecognizers>
+                                </Button>
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="3" Text="Import Settings" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Button Grid.Column="1" Grid.Row="3" ImageSource="{mi:MaterialOutlined Icon=UploadFile, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#FABC05"  FontAttributes="Bold" x:Name="ImportSettingsButton" ToolTipProperties.Text="Import Settings" Clicked="ImportSettingsButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                    <Button.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerExited="Import_PointerExited" PointerEntered="Import_PointerEntered"/>
+                                    </Button.GestureRecognizers>
+                                </Button>
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="4" Text="Logout" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Button Grid.Column="1" Grid.Row="4" ImageSource="{mi:MaterialOutlined Icon=UploadFile, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#F33E51"  FontAttributes="Bold" x:Name="ExitAndLogoutButton" ToolTipProperties.Text="Logout and Exit" Clicked="ExitAndLogoutButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                    <Button.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerExited="Logout_PointerExited" PointerEntered="Logout_PointerEntered"/>
+                                    </Button.GestureRecognizers>
+                                </Button>
+                                <Label HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="5" Text="Reset Hwid" VerticalOptions="CenterAndExpand" FontFamily="Sans" FontSize="Subtitle"/>
+                                <Button Grid.Column="1" Grid.Row="5" ImageSource="{mi:MaterialOutlined Icon=LockReset, IconSize=32, IconColor=#1F1F1F}" BackgroundColor="#F33E51"  FontAttributes="Bold" x:Name="ExitAndResetHwid" ToolTipProperties.Text="Reset Hwid and Exit" Clicked="ResetHwidButton_Clicked" TextColor="#1F1F1F" CornerRadius="5" Padding="10,5">
+                                    <Button.GestureRecognizers>
+                                        <PointerGestureRecognizer PointerExited="Logout_PointerExited" PointerEntered="Logout_PointerEntered"/>
+                                    </Button.GestureRecognizers>
+                                </Button>
+
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+            </Grid>
+            
+        </Frame>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               Color="Transparent"
+               x:Class="GFrag.ShareModal">
+    <VerticalStackLayout Spacing="20" Padding="12" BackgroundColor="Transparent">
+        <Frame Background="#202020" Padding="12" CornerRadius="12">
+            <Grid Padding="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Label -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For User Picker -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- For Share Button -->
+                </Grid.RowDefinitions>
+
+                <Label Text="Select a user to share with" FontSize="18" FontAttributes="Bold" Grid.Row="0" TextColor="White" 
+                       Margin="0,0,0,10" />
+                <!-- Added bottom margin -->
+
+                <Picker x:Name="userPicker" Grid.Row="1" Title="Select User" 
+                        Margin="0,0,0,10" />
+                <!-- Added bottom margin -->
+
+                <Button Text="Share" Clicked="OnSubmitClicked" Grid.Row="2" />
+            </Grid>
+        </Frame>
+    </VerticalStackLayout>
+</toolkit:Popup>

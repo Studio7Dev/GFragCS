@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:local="clr-namespace:GFrag"
+             x:Class="GFrag.UploadPage"
+             Appearing="ContentPage_Appearing"
+             Loaded="ContentPage_Loaded"
+            
+             Title="UploadPage">
+    
+    <Grid>
+        <Frame x:Name="A0Frame" Padding="0" Margin="0" CornerRadius="7">
+            <Frame.GestureRecognizers>
+                <DragGestureRecognizer CanDrag="True" DragStarting="DragGestureRecognizer_DragStarting" />
+            </Frame.GestureRecognizers>
+            <Grid>
+                <WebView x:Name="backgroundWebView"
+                 HorizontalOptions="FillAndExpand"
+                 Source="http://127.0.0.1:52347/background"
+                 VerticalOptions="FillAndExpand"
+                 HandlerChanged="backgroundWebView_HandlerChanged"
+                 Background="#202020"
+                 BackgroundColor="#202020" />
+
+                <Frame x:Name="AFrame" BackgroundColor="#202029" BorderColor="#7160E8" CornerRadius="25" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Frame.GestureRecognizers>
+                        <DropGestureRecognizer AllowDrop="True" Drop="DropGestureRecognizer_Drop" />
+                    </Frame.GestureRecognizers>
+                    <Grid Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Row="0" Grid.Column="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" >
+                            <Label Text="Upload File" FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" Padding="10" FontFamily="Sans" />
+                            <Image Source="google_cloud.png" WidthRequest="300" HeightRequest="300" />
+                        </StackLayout>
+                        <Button ImageSource="{mi:MaterialOutlined Icon=FileOpen, IconSize=32}" FontSize="18" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" x:Name="SelectFileButton" Text="Select File" Clicked="SelectFileButton_Clicked" WidthRequest="200" HeightRequest="50" CornerRadius="10" BackgroundColor="#4286F5" TextColor="#1F1F1F" >
+                            <Button.GestureRecognizers>
+                                <PointerGestureRecognizer PointerExited="Select_PointerExited" PointerEntered="Select_PointerEntered"/>
+                                <DropGestureRecognizer AllowDrop="True" Drop="DropGestureRecognizer_Drop" />
+                            </Button.GestureRecognizers>
+                        </Button>
+                        <Label Grid.Row="2" Grid.Column="0" FontFamily="Sans" x:Name="SelectedFileLabel" Text="No file selected" HorizontalTextAlignment="Center" FontSize="16" FontAttributes="Bold" Margin="0,10,0,10" />
+                        <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Vertical">
+                            <Button ImageSource="{mi:MaterialOutlined Icon=CloudUpload, IconSize=32}" FontSize="18" FontAttributes="Bold" Grid.Column="0" x:Name="UploadFileButton" Text="Upload File" Clicked="UploadFileButton_Clicked" WidthRequest="200" HeightRequest="50" CornerRadius="10" BackgroundColor="#FABC05" TextColor="#1F1F1F" IsEnabled="False" >
+                                <Button.GestureRecognizers>
+                                    <PointerGestureRecognizer PointerExited="Upload_PointerExited" PointerEntered="Upload_PointerEntered"/>
+                                </Button.GestureRecognizers>
+                            </Button>
+                            <ProgressBar Grid.Column="0" x:Name="UploadProgressBar" WidthRequest="200" HeightRequest="20" IsVisible="False" HorizontalOptions="Center" />
+                        </StackLayout>
+                        <Label Grid.Row="4" Grid.Column="0" x:Name="UploadStatusLabel" Text="" HorizontalTextAlignment="Center" Margin="0,10,0,10" />
+                    </Grid>
+                </Frame>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

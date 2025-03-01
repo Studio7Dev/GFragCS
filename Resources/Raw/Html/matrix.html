@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Matrix Grid Background</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<link href="https://assets.codepen.io/2509128/style.css" rel="stylesheet">
+
+<style>
+*, *::before, *::after {
+  font-family: inherit;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 62.5%;
+}
+
+html body {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a, a:link, a:visited {
+  text-decoration: none;
+}
+</style>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+body {
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  color: green;
+  font-family: "Share Tech Mono", "Cascadia Code", Menlo, Monaco, "Courier New", monospace;
+  font-size: 6rem;
+  filter: drop-shadow(0px 0px 5px currentColor);
+}
+h1::after {
+  content: "";
+  display: inline-block;
+  width: 0.2em;
+  height: 0.7em;
+  background-color: currentColor;
+  margin-left: 0.1em;
+  -webkit-animation: blink 1s linear infinite forwards;
+          animation: blink 1s linear infinite forwards;
+  vertical-align: baseline;
+}
+
+.grid-container {
+  --grid: 10rem;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  perspective: 100rem;
+  -webkit-animation: rotate 100s linear infinite forwards;
+          animation: rotate 100s linear infinite forwards;
+}
+.grid-container .plane {
+  --dir: 1;
+  width: 300%;
+  height: 150%;
+  min-height: 70rem;
+  position: absolute;
+  bottom: 0;
+  transform-style: preserve-3d;
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotateX(85deg);
+}
+.grid-container .plane:last-child {
+  --dir: -1;
+  top: 0;
+  transform-origin: top center;
+  transform: translateX(-50%) rotateX(-85deg);
+}
+.grid-container .plane:last-child > *::after {
+  background-image: linear-gradient(to top, black var(--grid), rgba(0, 0, 0, 0));
+}
+.grid-container .plane > * {
+  transform-style: preserve-3d;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+.grid-container .plane > *::before, .grid-container .plane > *::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.grid-container .plane > *::before {
+  background-image: repeating-linear-gradient(to left, #ff00ff, #800080 4px, transparent 4px, transparent var(--grid)), 
+                    repeating-linear-gradient(to bottom, #ff00ff, #800080 4px, transparent 4px, transparent var(--grid));
+  -webkit-animation: move 1s linear infinite forwards;
+          animation: move 1s linear infinite forwards;
+}
+.grid-container .plane > *::after {
+  background-image: linear-gradient(to bottom, black var(--grid), rgba(0, 0, 0, 0));
+  z-index: 1;
+  transform: translateZ(1px);
+}
+.grid-container .plane .glow {
+  filter: blur(1rem);
+  z-index: 1;
+  mix-blend-mode: plus-lighter;
+}
+
+@-webkit-keyframes move {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(calc(var(--grid) * var(--dir)));
+  }
+}
+
+@keyframes move {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(calc(var(--grid) * var(--dir)));
+  }
+}
+@-webkit-keyframes blink {
+  0% {
+    visibility: visible;
+  }
+  50% {
+    visibility: visible;
+  }
+  51% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+@keyframes blink {
+  0% {
+    visibility: visible;
+  }
+  50% {
+    visibility: visible;
+  }
+  51% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+</style>
+<style>
+
+  canvas {
+      display: block;
+  }
+
+  html, body {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+  }
+
+  #particles-js {
+      width: 100%;
+      height: 100%;
+  }
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="grid-container" id="particles-js">
+	<div class="plane">
+		<div class="grid"></div>
+		<div class="glow"></div>
+	</div>
+	<div class="plane">
+		<div class="grid"></div>
+		<div class="glow"></div>
+	</div>
+</div>
+<!-- partial -->
+
+<script>
+particlesJS("particles-js", {
+    "particles": {
+        "number": {
+            "value": 80,
+            "density": {
+                "enable": true,
+                "value_area": 800
+            }
+        },
+        "color": {
+            "value": "#ffffff"
+        },
+        "shape": {
+            "type": "circle",
+            "stroke": {
+                "width": 0,
+                "color": "#000000"
+            },
+            "polygon": {
+                "nb_sides": 5
+            },
+            "image": {
+                "src": "img/github.svg",
+                "width": 100,
+                "height": 100
+            }
+        },
+        "opacity": {
+            "value": 0.5,
+            "random": false,
+            "anim": {
+                "enable": false,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+            }
+        },
+        "size": {
+            "value": 5,
+            "random": true,
+            "anim": {
+                "enable": false,
+                "speed": 40,
+                "size_min": 0.1,
+                "sync": false
+            }
+        },
+        "line_linked": {
+            "enable": true,
+            "distance": 150,
+            "color": "#ffffff",
+            "opacity": 0.4,
+            "width": 1
+        },
+        "move": {
+            "enable": true,
+            "speed": 6,
+            "direction": "none",
+            "random": true,
+            "straight": false,
+            "out_mode": "bounce",
+            "bounce": false,
+            "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+            }
+        }
+    },
+    "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+            "onhover": {
+                "enable": true,
+                "mode": "repulse"
+            },
+            "onclick": {
+                "enable": true,
+                "mode": "push"
+            },
+            "resize": true
+        },
+        "modes": {
+            "grab": {
+                "distance": 400,
+                "line_linked": {
+                    "opacity": 1
+                }
+            },
+            "bubble": {
+                "distance": 400,
+                "size": 40,
+                "duration": 2,
+                "opacity": 8,
+                "speed": 3
+            },
+            "repulse": {
+                "distance": 200,
+                "duration": 0.4
+            },
+            "push": {
+                "particles_nb": 4
+            },
+            "remove": {
+                "particles_nb": 2
+            }
+        }
+    },
+    "retina_detect": true
+});
+</script>
+</body>
+</html>
