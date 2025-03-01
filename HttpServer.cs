@@ -57,7 +57,7 @@ namespace GFrag
 
                                 context.Response.ContentEncoding = Encoding.UTF8;
                                 context.Response.ContentType = "text/plain";
-                                var bytes = Encoding.UTF8.GetBytes(Token);
+                                var bytes = Encoding.UTF8.GetBytes("Success Login");
                                 await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
                                 Preferences.Set("Token", Token.Trim());
                                 Preferences.Set("UserName", Username);
@@ -199,6 +199,7 @@ namespace GFrag
                             string token = await auth.LoginAsync(Username, Password, hwid);
                             if (token == "Invalid hardware ID")
                             {
+                                
                                 await Device.InvokeOnMainThreadAsync(async () =>
                                     {
 
@@ -223,11 +224,21 @@ namespace GFrag
                             }
                             else
                             {
-                                context.Response.ContentEncoding = Encoding.UTF8;
-                                context.Response.ContentType = "text/plain";
-                                var bytes = Encoding.UTF8.GetBytes("Failed Reset HWID"
-                                    );
-                                await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
+                                        var message = await PrivateClass.ResetHwid(Username);
+                                        if (message.message == "HWID reset successfully")
+                                        {
+                                            context.Response.ContentEncoding = Encoding.UTF8;
+                                            context.Response.ContentType = "text/plain";
+                                            var bytes = Encoding.UTF8.GetBytes("Success Reset HWID");
+                                            await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
+                                        }
+                                        else
+                                        {
+                                            context.Response.ContentEncoding = Encoding.UTF8;
+                                            context.Response.ContentType = "text/plain";
+                                            var bytes = Encoding.UTF8.GetBytes(message.message);
+                                            await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
+                                        }
                             }
                         });
                     }

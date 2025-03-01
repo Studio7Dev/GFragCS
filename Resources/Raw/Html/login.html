@@ -299,11 +299,13 @@ PlayHydra("SYSTEM INITIALIZING");
           contentType: 'application/x-www-form-urlencoded', // Set content type
           success: function (response) {
             // Check the response for success or failure
-            if (response.trim() === "Failed Login") {
-              $('#responseMessage').html('<p style="color: red;">Login failed. Please check your credentials.</p>');
-            } else {
-              $('#responseMessage').html('<p style="color: red;">Login successful!</p>');
-            }
+              if (response.trim() === "Failed Login") {
+                  $('#responseMessage').html('<p style="color: red;">Login failed. Please check your credentials.</p>');
+              } else if (response.trim() === "Success Login") {
+                  $('#responseMessage').html('<p style="color: red;">Login successful!</p>');
+              } else {
+                  $('#responseMessage').html('<p style="color: red;">' + response + '</p>');
+              }
           },
           error: function (xhr, status, error) {
             // Handle error response
@@ -382,8 +384,10 @@ PlayHydra("SYSTEM INITIALIZING");
             // Check the response for success or failure
             if (response.trim() === "Failed Reset HWID") {
               $('#responseMessage').html('<p style="color: red;">Reset HWID failed. Please check your credentials.</p>');
-            } else {
+            } else if (response.trim() === "Success Reset HWID") {
               $('#responseMessage').html('<p style="color: red;">Reset HWID successful!</p>');
+            } else {
+              $('#responseMessage').html('<p style="color: red;">' + response + '</p>');
             }
           },
           error: function (xhr, status, error) {
