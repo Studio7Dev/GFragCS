@@ -48,7 +48,7 @@ namespace GFrag
                         var hwid = auth.GetHwid();
                         var Token = await auth.LoginAsync(Username, Password, hwid);
                         Debug.WriteLine("Web Login: " + Token);
-                        if(Token != null)
+                        if(Token != null || Token == "")
                         {
                             if (!Token.Contains("hardware"))
                             {
