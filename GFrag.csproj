@@ -144,10 +144,10 @@
 			<ObfuscatedAssembly Include="$(TargetDir)$(TargetFileName)" />
 		</ItemGroup>
 		<!-- Run TrialRemover.exe on the obfuscated assembly -->
-		<Exec Command="ArmDotTrialRemover.exe @(ObfuscatedAssembly->'%(FullPath)')" />
+		<!--Exec Command="ArmDotTrialRemover.exe @(ObfuscatedAssembly->'%(FullPath)')" -->
 
 		<!-- Rename the output file back to the original assembly name -->
-		<Exec Command="move /Y @(ObfuscatedAssembly->'%(RootDir)%(Directory)%(Filename)_Trial_Removed.dll') @(ObfuscatedAssembly->'%(FullPath)')" />
+		<!-- Exec Command="move /Y @(ObfuscatedAssembly->'%(RootDir)%(Directory)%(Filename)_Trial_Removed.dll') @(ObfuscatedAssembly->'%(FullPath)')" -->
 	</Target>
 
 
