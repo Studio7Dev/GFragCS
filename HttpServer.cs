@@ -199,7 +199,7 @@ namespace GFrag
 
                             var hwid = auth.GetHwid();
                             var token = await auth.LoginAsync(Username, Password, hwid);
-                            if (token == "" || token == null)
+                            if (token == "" || token == null || token.Contains("Invalid"))
                             {
                                 
                                 await Device.InvokeOnMainThreadAsync(async () =>
