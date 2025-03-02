@@ -48,7 +48,7 @@ The GFrag Project is a Google Fragmented File Storage Solution developed by Zach
 ## Screenshots
 ![Login](https://i.imgur.com/1yoXiA1.png)
 ![Loader](https://i.imgur.com/BcxDcmS.png)
-![Settings](https://i.imgur.com/ClkmRtl.png)
+![Settings](https://i.imgur.com/sIW4Zqw.png)
 ![Upload](https://i.imgur.com/leq9M4Z.png)
 ![Multi Upload](https://i.imgur.com/MPaSfvS.png)
 ![Files](https://i.imgur.com/ZDJYfdL.png)
