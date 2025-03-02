@@ -45,6 +45,16 @@ The GFrag Project is a Google Fragmented File Storage Solution developed by Zach
 - Google Cloud Storage API enabled  
 - Visual Studio 2022 or later  
 
+## Screenshots
+![Login](https://i.imgur.com/1yoXiA1.png)
+![Loader](https://i.imgur.com/BcxDcmS.png)
+![Settings](https://i.imgur.com/ClkmRtl.png)
+![Upload](https://i.imgur.com/leq9M4Z.png)
+![Multi Upload](https://i.imgur.com/MPaSfvS.png)
+![Files](https://i.imgur.com/ZDJYfdL.png)
+![Account Creator](https://i.imgur.com/HgfYfTY.png)
+
+
 ## Installation  
 1. Clone the repository:
 2. Navigate to the project directory:
