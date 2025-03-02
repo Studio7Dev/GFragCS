@@ -186,10 +186,11 @@ namespace GFrag
                     if (HasBody)
                     {
                         var Body = context.Request.InputStream;
-                        Debug.WriteLine(Body);
+                    
                         var Encoding = context.Request.ContentEncoding;
                         var Reader = new System.IO.StreamReader(Body, Encoding);
                         var BodyString = await Reader.ReadToEndAsync();
+                        Debug.WriteLine(BodyString);
                         var BodyDict = BodyString.Split('&').Select(x => x.Split('=')).ToDictionary(x => x[0], x => x[1]);
                         var Username = BodyDict["username"].Trim();
                         var Password = BodyDict["password"].Trim();
@@ -198,7 +199,7 @@ namespace GFrag
 
                             var hwid = auth.GetHwid();
                             var token = await auth.LoginAsync(Username, Password, hwid);
-                            if (token == "")
+                            if (token == "" || token == null)
                             {
                                 
                                 await Device.InvokeOnMainThreadAsync(async () =>
@@ -227,7 +228,7 @@ namespace GFrag
                             {
                                             context.Response.ContentEncoding = Encoding.UTF8;
                                             context.Response.ContentType = "text/plain";
-                                            var bytes = Encoding.UTF8.GetBytes("Failed to Reset Hwid");
+                                            var bytes = Encoding.UTF8.GetBytes("Failed to Reset Hwid, "+token);
                                             await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
                             }
                         });
