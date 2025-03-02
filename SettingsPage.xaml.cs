@@ -130,6 +130,12 @@ namespace GFrag
             {
                 HttpsSwitch.IsToggled = true;
             }
+            
+            // Round the value to two decimal places
+            var CurrentValue = Preferences.Get("FGP", 0.05);
+            PercentSlider.Value = CurrentValue;
+            double roundedValue = Math.Round(PercentSlider.Value * 100, 2);
+            FPsize.Text = roundedValue.ToString("F2") + "%";
         }
 
         private async Task SaveSettingsFunc()
@@ -444,6 +450,76 @@ namespace GFrag
 
                 };
 #endif
+        }
+        private int CalcTFiles(Microsoft.Maui.Controls.Slider Slider)
+        {
+            Preferences.Set("FGP", Slider.Value);
+
+            double fragmentPercentage = Slider.Value; // e.g., 0.05 for 5%
+
+            // Example file size in bytes (replace with actual file size if available)
+            long fileSize = 1000000; // 1 MB for example
+
+            // Calculate fragment size based on the percentage
+            long fragmentSize = (long)(fileSize * fragmentPercentage);
+
+            // Ensure fragment size is not larger than the file size
+            if (fragmentSize > fileSize)
+            {
+                fragmentSize = fileSize;
+            }
+
+            // Calculate the total number of files (fragments)
+            int totalFiles = (int)Math.Ceiling((double)fileSize / fragmentSize);
+            return totalFiles;
+        }
+        private async void PercentSlider_DragCompleted(object sender, EventArgs e)
+        {
+            var Slider = sender as Microsoft.Maui.Controls.Slider;
+            Preferences.Set("FGP", Slider.Value);
+
+            double fragmentPercentage = Slider.Value; // e.g., 0.05 for 5%
+
+            // Example file size in bytes (replace with actual file size if available)
+            long fileSize = 1000000; // 1 MB for example
+
+            // Calculate fragment size based on the percentage
+            long fragmentSize = (long)(fileSize * fragmentPercentage);
+
+            // Ensure fragment size is not larger than the file size
+            if (fragmentSize > fileSize)
+            {
+                fragmentSize = fileSize;
+            }
+
+            // Calculate the total number of files (fragments)
+            int totalFiles = (int)Math.Ceiling((double)fileSize / fragmentSize);
+
+            await DisplayAlert("Fragment Size", $"Fragment size set to {Slider.Value}. Amount of files: {totalFiles}", "OK");
+        }
+        private void PercentSlider_Handler(object sender, HandlerChangingEventArgs e)
+        {
+            var Slider = sender as Microsoft.Maui.Controls.Slider;
+
+            // Round the value to two decimal places
+            double roundedValue = Math.Round(Slider.Value * 100, 2);
+            FPsize.Text = roundedValue.ToString("F2") + "%"; // Format to two decimal places
+        }
+
+        private void PercentSlider_HandlerChanging(object sender, HandlerChangingEventArgs e)
+        {
+            var Slider = sender as Microsoft.Maui.Controls.Slider;
+            // Round the value to two decimal places
+            double roundedValue = Math.Round(Slider.Value * 100, 2);
+            FPsize.Text = roundedValue.ToString("F2") + "%"; // Format to two decimal places
+        }
+
+        private void PercentSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            var Slider = sender as Microsoft.Maui.Controls.Slider;
+            // Round the value to two decimal places
+            double roundedValue = Math.Round(Slider.Value * 100, 2);
+            FPsize.Text = roundedValue.ToString("F2") + "%"; // Format to two decimal places
         }
     }
 }

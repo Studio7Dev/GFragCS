@@ -46,9 +46,9 @@ public class FileSplitter
         using (var file = new FileStream(sourceFilePath, FileMode.Open, FileAccess.Read))
         {
             var fileInfo = new FileInfo(sourceFilePath);
-
+            double fileSplitPercent = Preferences.Get("FGP", 0.05);
             // Calculate fragment size as 5% of the total file size
-            var fragmentSize = (long)(fileInfo.Length * 0.05);
+            var fragmentSize = (long)(fileInfo.Length * fileSplitPercent);
 
             // If the file is smaller than the calculated fragment size, use the file size as the fragment size
             if (fragmentSize > fileInfo.Length)

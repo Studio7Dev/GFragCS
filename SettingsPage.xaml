@@ -58,12 +58,19 @@
                                     </Button>
                                 </StackLayout>
 
+                                <Label Text="File Split Size:" FontFamily="Sans" FontSize="Small"/>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Slider Minimum="0.01" Maximum="1" Value="0.05" x:Name="PercentSlider" DragCompleted="PercentSlider_DragCompleted" ValueChanged="PercentSlider_ValueChanged" WidthRequest="180" />
+                                    <Label Text="%" x:Name="FPsize"></Label>
+                                </StackLayout>
+
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
+                                        
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
