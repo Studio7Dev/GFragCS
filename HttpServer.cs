@@ -191,14 +191,14 @@ namespace GFrag
                         var Reader = new System.IO.StreamReader(Body, Encoding);
                         var BodyString = await Reader.ReadToEndAsync();
                         var BodyDict = BodyString.Split('&').Select(x => x.Split('=')).ToDictionary(x => x[0], x => x[1]);
-                        var Username = BodyDict["username"];
-                        var Password = BodyDict["password"];
+                        var Username = BodyDict["username"].Trim();
+                        var Password = BodyDict["password"].Trim();
                         var hwid = auth.GetHwid();
                         await Task.Run(async () => {
 
                             var hwid = auth.GetHwid();
-                            string token = await auth.LoginAsync(Username, Password, hwid);
-                            if (token.Contains("hardware"))
+                            var token = await auth.LoginAsync(Username, Password, hwid);
+                            if (token == "")
                             {
                                 
                                 await Device.InvokeOnMainThreadAsync(async () =>
@@ -225,21 +225,10 @@ namespace GFrag
                             }
                             else
                             {
-                                        var message = await PrivateClass.ResetHwid(Username);
-                                        if (message.message == "HWID reset successfully")
-                                        {
                                             context.Response.ContentEncoding = Encoding.UTF8;
                                             context.Response.ContentType = "text/plain";
-                                            var bytes = Encoding.UTF8.GetBytes("Success Reset HWID");
+                                            var bytes = Encoding.UTF8.GetBytes("Failed to Reset Hwid");
                                             await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
-                                        }
-                                        else
-                                        {
-                                            context.Response.ContentEncoding = Encoding.UTF8;
-                                            context.Response.ContentType = "text/plain";
-                                            var bytes = Encoding.UTF8.GetBytes(message.message);
-                                            await context.Response.OutputStream.WriteAsync(bytes, 0, bytes.Length);
-                                        }
                             }
                         });
                     }
